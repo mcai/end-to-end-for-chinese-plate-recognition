@@ -5,7 +5,7 @@ import sys
 sys.path.insert(0, "../../python")
 import mxnet as mx
 import numpy as np
-import cv2, random
+import  cv2,random
 import os
 from io import BytesIO
 from train import gen_rand, gen_sample
@@ -51,10 +51,10 @@ def TestRecognizeOne(img):
     img = cv2.resize(img,(120,30))
     cv2.imshow("img",img);
 
-    print img.shape
+    print (img.shape)
     img = np.swapaxes(img,0,2)
     img = np.swapaxes(img,1,2)
-    print img.shape
+    print (img.shape)
     batch_size = 1
     _, arg_params, __ = mx.model.load_checkpoint("cnn-ocr", 1)
     data_shape = [("data", (batch_size, 3, 30, 120))]
@@ -77,8 +77,8 @@ def TestRecognizeOne(img):
             result =  np.argmax(probs[i][31:65])+31
 
         line += chars[result]+" "
-    print 'predicted: ' + line
+    print ('predicted: ' + line)
     cv2.waitKey(0)
 
 if __name__ == '__main__':
-    TestRecognizeOne(cv2.imread("./plate/1.jpg"))
+    TestRecognizeOne(cv2.imread("./plate/01.jpg"))

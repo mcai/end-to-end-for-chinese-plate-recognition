@@ -3,6 +3,10 @@
 # pylint: disable=superfluous-parens, no-member, invalid-name
 
 import sys
+#import range
+#from numpy.core.tests.test_mem_overlap import range
+from mxnet import *
+
 sys.path.insert(0, "../../python")
 import mxnet as mx
 import numpy as np
@@ -31,16 +35,20 @@ def rand_range(lo,hi):
 
 
 def gen_rand():
+    """
+
+    :rtype: object
+    """
     name = "";
     label= [];
     label.append(rand_range(0,31));
     label.append(rand_range(41,65));
-    for i in xrange(5):
+    for i in range(5):
         label.append(rand_range(31,65))
 
     name+=chars[label[0]]
     name+=chars[label[1]]
-    for i in xrange(5):
+    for i in range(5):
         name+=chars[label[i+2]]
     return name,label
 
@@ -65,10 +73,10 @@ class OCRIter(mx.io.DataIter):
         self.width = width
         self.provide_data = [('data', (batch_size, 3, height, width))]
         self.provide_label = [('softmax_label', (self.batch_size, num_label))]
-        print "start"
+        print ("start")
     def __iter__(self):
 
-        for k in range(self.count / self.batch_size):
+        for k in range((int)(self.count / self.batch_size)):
             data = []
             label = []
             for i in range(self.batch_size):
@@ -124,7 +132,7 @@ def Accuracy(label, pred):
     label = label.T.reshape((-1, ))
     hit = 0
     total = 0
-    for i in range(pred.shape[0] / 4):
+    for i in range((int)(pred.shape[0] / 4)):
         ok = True
         for j in range(4):
             k = i * 4 + j
@@ -139,7 +147,7 @@ def Accuracy(label, pred):
 
 def train():
     network = get_ocrnet()
-    devs = [mx.gpu(i) for i in range(1)]
+#    devs = [mx.gpu(i) for i in range(1)]
     model = mx.model.FeedForward(
                                  symbol = network,
                                  num_epoch = 1,
@@ -156,7 +164,7 @@ def train():
     logging.basicConfig(level=logging.DEBUG, format=head)
     model.fit(X = data_train, eval_data = data_test, eval_metric = Accuracy, batch_end_callback=mx.callback.Speedometer(batch_size, 50))
     model.save("cnn-ocr")
-    print gen_rand()
+    print (gen_rand())
 
 
 if __name__ == '__main__':

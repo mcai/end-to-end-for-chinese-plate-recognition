@@ -132,7 +132,7 @@ def Accuracy(label, pred):
     label = label.T.reshape((-1, ))
     hit = 0
     total = 0
-    for i in range((int)(pred.shape[0] / 4)):
+    for i in range((int)(pred.shape[0] / 7)):
         ok = True
         for j in range(4):
             k = i * 4 + j
@@ -155,8 +155,9 @@ def train():
                                  wd = 0.00001,
                                  initializer = mx.init.Xavier(factor_type="in", magnitude=2.34),
                                  momentum = 0.9)
-    batch_size = 8
-    data_train = OCRIter(500000, batch_size, 7, 30, 120)
+    batch_size = 20
+    #data_train = OCRIter(500000, batch_size, 7, 30, 120)
+    data_train = OCRIter(1000000, batch_size, 7, 30, 120)
     data_test = OCRIter(1000, batch_size,7, 30, 120)
 
     import logging

@@ -135,7 +135,7 @@ def Accuracy(label, pred):
     for i in range((int)(pred.shape[0] / 7)):
         ok = True
         for j in range(7):
-            k = i * 7 + j
+            k = i *7 + j
             if np.argmax(pred[k]) != int(label[k]):
                 ok = False
                 break

@@ -134,8 +134,8 @@ def Accuracy(label, pred):
     total = 0
     for i in range((int)(pred.shape[0] / 7)):
         ok = True
-        for j in range(4):
-            k = i * 4 + j
+        for j in range(7):
+            k = i * 7 + j
             if np.argmax(pred[k]) != int(label[k]):
                 ok = False
                 break
@@ -157,7 +157,7 @@ def train():
                                  momentum = 0.9)
     batch_size = 20
     #data_train = OCRIter(500000, batch_size, 7, 30, 120)
-    data_train = OCRIter(1000000, batch_size, 7, 30, 120)
+    data_train = OCRIter(2000000, batch_size, 7, 30, 120)
     data_test = OCRIter(1000, batch_size,7, 30, 120)
 
     import logging

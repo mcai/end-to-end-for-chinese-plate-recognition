@@ -32,7 +32,7 @@ def generate_sample(generate_plate, width, height):
     return label, img
 
 
-class OCRBatch(object):
+class PlateRecognitionBatch(object):
     def __init__(self, data_names, data, label_names, label):
         self.data = data
         self.label = label
@@ -48,9 +48,9 @@ class OCRBatch(object):
         return [(n, x.shape) for n, x in zip(self.label_names, self.label)]
 
 
-class OCRIter(mx.io.DataIter):
+class PlateRecognitionIter(mx.io.DataIter):
     def __init__(self, count, batch_size, num_label, height, width):
-        super(OCRIter, self).__init__()
+        super(PlateRecognitionIter, self).__init__()
 
         self.batch_size = batch_size
         self.count = count
@@ -72,7 +72,7 @@ class OCRIter(mx.io.DataIter):
             label_all = [mx.nd.array(label)]
             data_names = ['data']
             label_names = ['softmax_label']
-            data_batch = OCRBatch(data_names, data_all, label_names, label_all)
+            data_batch = PlateRecognitionBatch(data_names, data_all, label_names, label_all)
             yield data_batch
 
     def reset(self):
@@ -109,9 +109,9 @@ def train():
 
     batch_size = 20
 
-    # data_train = OCRIter(2000000, batch_size, 7, 30, 120)
-    data_train = OCRIter(5000000, batch_size, 7, 30, 120)
-    data_test = OCRIter(1000, batch_size, 7, 30, 120)
+    # data_train = PlateRecognitionIter(2000000, batch_size, 7, 30, 120)
+    data_train = PlateRecognitionIter(5000000, batch_size, 7, 30, 120)
+    data_test = PlateRecognitionIter(1000, batch_size, 7, 30, 120)
 
     import logging
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)-15s %(message)s')

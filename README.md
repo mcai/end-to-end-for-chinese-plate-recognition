@@ -32,12 +32,15 @@ The following combinations were tested successfully:
 
 # Usage
 
-Generate plates:
+1. Generate plate images for training:
+
 `python3 ./generate_plates.py`
 
-Train:
+2. Training:
+
 `python3 ./train.py`
 
-Recognize:
+3. Recognition:
+
 `python3 ./recognize.py`
  

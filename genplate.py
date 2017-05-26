@@ -130,8 +130,8 @@ class GenPlate:
         self.fontC = ImageFont.truetype(fontCh, 43, 0)
         self.fontE = ImageFont.truetype(fontEng, 60, 0)
         self.img = np.array(Image.new("RGB", (226, 70), (255, 255, 255)))
-        self.bg = cv2.resize(cv2.imread("./images/template.bmp"), (226, 70))
-        self.smu = cv2.imread("./images/smu2.jpg")
+        self.bg = cv2.resize(cv2.imread("images/template.bmp"), (226, 70))
+        self.smu = cv2.imread("images/smu2.jpg")
         self.noplates_path = []
         for parent, parent_folder, filenames in os.walk(NoPlates):
             for filename in filenames:
@@ -155,7 +155,6 @@ class GenPlate:
             com = cv2.bitwise_or(fg, self.bg)
             com = rot(com, r(60) - 30, com.shape, 30)
             com = rotRandrom(com, 10, (com.shape[1], com.shape[0]))
-            # com = AddSmudginess(com,self.smu)
 
             com = tfactor(com)
             com = random_environment(com, self.noplates_path)

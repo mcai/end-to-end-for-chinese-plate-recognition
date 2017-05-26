@@ -11,9 +11,10 @@ Chinese Plate Number Recognition powered by OpenCV and MxNet written in Python 3
 * MxNet 0.9.5
 
 The following combinations were tested successfully:
-    * Python 3.5 + OpenCV 3.2.1 + MxNet 0.9.5(with GPU) + Ubuntu 16.04.2
-    
-    * Python 3.6 + OpenCV 3.2.1 + MxNet 0.9.5(without GPU) + Mac OS Sierra (10.12.5)
+
+* Python 3.5 + OpenCV 3.2.1 + MxNet 0.9.5(with GPU) + Ubuntu 16.04.2
+
+* Python 3.6 + OpenCV 3.2.1 + MxNet 0.9.5(without GPU) + Mac OS Sierra (10.12.5)
 
 # File Structure
 

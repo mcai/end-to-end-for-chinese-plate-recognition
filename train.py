@@ -3,8 +3,8 @@ import mxnet as mx
 from mxnet.test_utils import list_gpus
 
 from common import plate_recognition_net
-from generate_plate import *
-from generate_plate import generate_plate
+from generate_plates import *
+from generate_plates import generate_plate
 
 
 class OCRBatch(object):

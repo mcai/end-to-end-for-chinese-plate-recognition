@@ -59,7 +59,7 @@ def generate_sample(generate_plate, width, height):
 class OCRIter(mx.io.DataIter):
     def __init__(self, count, batch_size, num_label, height, width):
         super(OCRIter, self).__init__()
-        self.genplate = GeneratePlate("fonts/platech.ttf", 'fonts/platechar.ttf', 'no_plates')
+        self.genplate = GeneratePlate("fonts/plate_cn.ttf", 'fonts/plate_en.ttf', 'no_plates')
         self.batch_size = batch_size
         self.count = count
         self.height = height

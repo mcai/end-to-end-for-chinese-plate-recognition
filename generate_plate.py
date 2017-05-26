@@ -169,6 +169,6 @@ class GeneratePlate:
             return com
 
 
-G = GeneratePlate("fonts/platech.ttf", 'fonts/platechar.ttf', "no_plates")
+G = GeneratePlate("fonts/plate_cn.ttf", 'fonts/plate_en.ttf', "no_plates")
 
 generate_batch(100, "plates", (272, 72))

@@ -2,6 +2,12 @@
 
 Chinese Plate Number Recognition powered by OpenCV and MxNet written in Python 3.
 
+Based on the following Github projects:
+
+* [https://github.com/szad670401/end-to-end-for-chinese-plate-recognition](https://github.com/szad670401/end-to-end-for-chinese-plate-recognition)
+
+* [https://github.com/ibyte2011/end-to-end-for-chinese-plate-recognition](https://github.com/ibyte2011/end-to-end-for-chinese-plate-recognition)
+
 # Dependencies
 
 * Python 3

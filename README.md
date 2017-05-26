@@ -10,7 +10,7 @@ Chinese Plate Number Recognition powered by OpenCV and MxNet written in Python 3
 
 * MxNet 0.9.5
 
-Please see [notes/opencv.md](blob/master/notes/opencv.md) and [notes/mxnet.md](blob/master/notes/mxnet.md) for installing OpenCV and MxNet, respectively.
+Please see [notes/opencv.md](notes/opencv.md) and [notes/mxnet.md](notes/mxnet.md) for installing OpenCV and MxNet, respectively.
 
 The following combinations were tested successfully:
 

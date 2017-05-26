@@ -4,6 +4,7 @@ from mxnet.test_utils import list_gpus
 
 from common import plate_recognition_net
 from generate_plate import *
+from generate_plate import generate_plate
 
 
 class OCRBatch(object):
@@ -59,7 +60,6 @@ def generate_sample(generate_plate, width, height):
 class OCRIter(mx.io.DataIter):
     def __init__(self, count, batch_size, num_label, height, width):
         super(OCRIter, self).__init__()
-        self.genplate = GeneratePlate("fonts/plate_cn.ttf", 'fonts/plate_en.ttf', 'no_plates')
         self.batch_size = batch_size
         self.count = count
         self.height = height
@@ -74,7 +74,7 @@ class OCRIter(mx.io.DataIter):
             data = []
             label = []
             for i in range(self.batch_size):
-                num, img = generate_sample(self.genplate, self.width, self.height)
+                num, img = generate_sample(generate_plate, self.width, self.height)
                 data.append(img)
                 label.append(num)
 

@@ -125,7 +125,7 @@ def generate_batch(batch_size, output_path, size):
         os.mkdir(output_path)
     for i in range(batch_size):
         plate_str = generate_plate_str(-1, -1)
-        img = G.generate(plate_str)
+        img = generate_plate.generate(plate_str)
         img = cv2.resize(img, size)
         cv2.imwrite(output_path + "/" + str(i).zfill(2) + ".jpg", img)
 
@@ -168,7 +168,6 @@ class GeneratePlate:
 
             return com
 
-
-G = GeneratePlate("fonts/plate_cn.ttf", 'fonts/plate_en.ttf', "no_plates")
+generate_plate = GeneratePlate("fonts/plate_cn.ttf", 'fonts/plate_en.ttf', "no_plates")
 
 generate_batch(100, "plates", (272, 72))

@@ -8,7 +8,7 @@ import cv2
 from common import chars
 
 
-def getnet():
+def get_net():
     data = mx.symbol.Variable('data')
     conv1 = mx.symbol.Convolution(data=data, kernel=(5, 5), num_filter=32)
     pool1 = mx.symbol.Pooling(data=conv1, pool_type="max", kernel=(2, 2), stride=(1, 1))
@@ -42,7 +42,7 @@ def recognize_one(img_filename):
     data_shape = [("data", (batch_size, 3, 30, 120))]
     input_shapes = dict(data_shape)
 
-    sym = getnet()
+    sym = get_net()
     executor = sym.simple_bind(ctx=mx.gpu() if list_gpus() else mx.cpu(), **input_shapes)
     for key in executor.arg_dict.keys():
         if key in arg_params:

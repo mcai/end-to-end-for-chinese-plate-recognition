@@ -2,7 +2,7 @@
 import mxnet as mx
 from mxnet.test_utils import list_gpus
 
-from genplate import *
+from generate_plate import *
 
 
 class OCRBatch(object):
@@ -53,7 +53,7 @@ def gen_sample(genplate, width, height):
 class OCRIter(mx.io.DataIter):
     def __init__(self, count, batch_size, num_label, height, width):
         super(OCRIter, self).__init__()
-        self.genplate = GenPlate("./font/platech.ttf", './font/platechar.ttf', './NoPlates')
+        self.genplate = GeneratePlate("./font/platech.ttf", './font/platechar.ttf', './NoPlates')
         self.batch_size = batch_size
         self.count = count
         self.height = height

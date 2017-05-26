@@ -2,6 +2,7 @@
 import mxnet as mx
 from mxnet.test_utils import list_gpus
 
+from common import get_ocrnet
 from generate_plate import *
 
 
@@ -22,27 +23,32 @@ class OCRBatch(object):
 
 
 def rand_range(lo, hi):
-    return lo + r(hi - lo)
+    return lo + rand(hi - lo)
 
 
-def gen_rand():
+def generate_rand():
     name = ""
+
     label = []
+
     label.append(rand_range(0, 31))
     label.append(rand_range(41, 65))
+
     for i in range(5):
         label.append(rand_range(31, 65))
 
     name += chars[label[0]]
     name += chars[label[1]]
+
     for i in range(5):
         name += chars[label[i + 2]]
+
     return name, label
 
 
-def gen_sample(genplate, width, height):
-    num, label = gen_rand()
-    img = genplate.generate(num)
+def generate_sample(generate_plate, width, height):
+    num, label = generate_rand()
+    img = generate_plate.generate(num)
     img = cv2.resize(img, (width, height))
     img = np.multiply(img, 1 / 255.0)
     img = img.transpose(2, 0, 1)
@@ -64,11 +70,11 @@ class OCRIter(mx.io.DataIter):
 
     def __iter__(self):
 
-        for k in range((int)(self.count / self.batch_size)):
+        for k in range(int(self.count / self.batch_size)):
             data = []
             label = []
             for i in range(self.batch_size):
-                num, img = gen_sample(self.genplate, self.width, self.height)
+                num, img = generate_sample(self.genplate, self.width, self.height)
                 data.append(img)
                 label.append(num)
 
@@ -83,37 +89,11 @@ class OCRIter(mx.io.DataIter):
         pass
 
 
-def get_ocrnet():
-    data = mx.symbol.Variable('data')
-    label = mx.symbol.Variable('softmax_label')
-    conv1 = mx.symbol.Convolution(data=data, kernel=(5, 5), num_filter=32)
-    pool1 = mx.symbol.Pooling(data=conv1, pool_type="max", kernel=(2, 2), stride=(1, 1))
-    relu1 = mx.symbol.Activation(data=pool1, act_type="relu")
-
-    conv2 = mx.symbol.Convolution(data=relu1, kernel=(5, 5), num_filter=32)
-    pool2 = mx.symbol.Pooling(data=conv2, pool_type="avg", kernel=(2, 2), stride=(1, 1))
-    relu2 = mx.symbol.Activation(data=pool2, act_type="relu")
-
-    flatten = mx.symbol.Flatten(data=relu2)
-    fc1 = mx.symbol.FullyConnected(data=flatten, num_hidden=120)
-    fc21 = mx.symbol.FullyConnected(data=fc1, num_hidden=65)
-    fc22 = mx.symbol.FullyConnected(data=fc1, num_hidden=65)
-    fc23 = mx.symbol.FullyConnected(data=fc1, num_hidden=65)
-    fc24 = mx.symbol.FullyConnected(data=fc1, num_hidden=65)
-    fc25 = mx.symbol.FullyConnected(data=fc1, num_hidden=65)
-    fc26 = mx.symbol.FullyConnected(data=fc1, num_hidden=65)
-    fc27 = mx.symbol.FullyConnected(data=fc1, num_hidden=65)
-    fc2 = mx.symbol.Concat(*[fc21, fc22, fc23, fc24, fc25, fc26, fc27], dim=0)
-    label = mx.symbol.transpose(data=label)
-    label = mx.symbol.Reshape(data=label, target_shape=(0,))
-    return mx.symbol.SoftmaxOutput(data=fc2, label=label, name="softmax")
-
-
-def acc(label, pred):
+def accuracy(label, pred):
     label = label.T.reshape((-1,))
     hit = 0
     total = 0
-    for i in range((int)(pred.shape[0] / 7)):
+    for i in range(int(pred.shape[0] / 7)):
         ok = True
         for j in range(7):
             k = i * 7 + j
@@ -140,12 +120,11 @@ def train():
     data_test = OCRIter(1000, batch_size, 7, 30, 120)
 
     import logging
-    head = '%(asctime)-15s %(message)s'
-    logging.basicConfig(level=logging.DEBUG, format=head)
-    model.fit(X=data_train, eval_data=data_test, eval_metric=acc,
+    logging.basicConfig(level=logging.DEBUG, format='%(asctime)-15s %(message)s')
+
+    model.fit(X=data_train, eval_data=data_test, eval_metric=accuracy,
               batch_end_callback=mx.callback.Speedometer(batch_size, 50))
     model.save("models/cnn-ocr")
-    print(gen_rand())
 
 
 if __name__ == '__main__':

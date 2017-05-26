@@ -1,34 +1,11 @@
 # coding=utf-8
-from mxnet.test_utils import list_gpus
+import cv2
 
 import mxnet as mx
 import numpy as np
-import cv2
+from mxnet.test_utils import list_gpus
 
-from common import chars
-
-
-def get_net():
-    data = mx.symbol.Variable('data')
-    conv1 = mx.symbol.Convolution(data=data, kernel=(5, 5), num_filter=32)
-    pool1 = mx.symbol.Pooling(data=conv1, pool_type="max", kernel=(2, 2), stride=(1, 1))
-    relu1 = mx.symbol.Activation(data=pool1, act_type="relu")
-
-    conv2 = mx.symbol.Convolution(data=relu1, kernel=(5, 5), num_filter=32)
-    pool2 = mx.symbol.Pooling(data=conv2, pool_type="avg", kernel=(2, 2), stride=(1, 1))
-    relu2 = mx.symbol.Activation(data=pool2, act_type="relu")
-
-    flatten = mx.symbol.Flatten(data=relu2)
-    fc1 = mx.symbol.FullyConnected(data=flatten, num_hidden=120)
-    fc21 = mx.symbol.FullyConnected(data=fc1, num_hidden=65)
-    fc22 = mx.symbol.FullyConnected(data=fc1, num_hidden=65)
-    fc23 = mx.symbol.FullyConnected(data=fc1, num_hidden=65)
-    fc24 = mx.symbol.FullyConnected(data=fc1, num_hidden=65)
-    fc25 = mx.symbol.FullyConnected(data=fc1, num_hidden=65)
-    fc26 = mx.symbol.FullyConnected(data=fc1, num_hidden=65)
-    fc27 = mx.symbol.FullyConnected(data=fc1, num_hidden=65)
-    fc2 = mx.symbol.Concat(*[fc21, fc22, fc23, fc24, fc25, fc26, fc27], dim=0)
-    return mx.symbol.SoftmaxOutput(data=fc2, name="softmax")
+from common import chars, plate_recognition_net
 
 
 def recognize_one(img_filename):
@@ -42,7 +19,7 @@ def recognize_one(img_filename):
     data_shape = [("data", (batch_size, 3, 30, 120))]
     input_shapes = dict(data_shape)
 
-    sym = get_net()
+    sym = plate_recognition_net(train=False)
     executor = sym.simple_bind(ctx=mx.gpu() if list_gpus() else mx.cpu(), **input_shapes)
     for key in executor.arg_dict.keys():
         if key in arg_params:

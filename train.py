@@ -2,7 +2,7 @@
 import mxnet as mx
 from mxnet.test_utils import list_gpus
 
-from common import get_ocrnet
+from common import plate_recognition_net
 from generate_plate import *
 
 
@@ -107,9 +107,9 @@ def accuracy(label, pred):
 
 
 def train():
-    network = get_ocrnet()
+    net = plate_recognition_net(train=True)
     model = mx.model.FeedForward(
-        symbol=network, ctx=mx.gpu() if list_gpus() else mx.cpu(),
+        symbol=net, ctx=mx.gpu() if list_gpus() else mx.cpu(),
         num_epoch=1,
         learning_rate=0.001,
         wd=0.00001,

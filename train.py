@@ -1,5 +1,4 @@
 # coding=utf-8
-import cv2
 import mxnet as mx
 from mxnet.test_utils import list_gpus
 

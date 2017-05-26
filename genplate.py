@@ -22,13 +22,6 @@ chars = ["京", "沪", "津", "渝", "冀", "晋", "蒙", "辽", "吉", "黑", "
 
 
 def rot(img, angel, shape, max_angel):
-    """ 使图像轻微的畸变
-
-        img 输入图像
-        factor 畸变的参数
-        size 为图片的目标尺寸
-
-    """
     size_o = [shape[1], shape[0]]
 
     size = (shape[1] + int(shape[0] * cos((float(max_angel) / 180) * 3.14)), shape[0])
@@ -118,7 +111,7 @@ def AddNoiseSingleChannel(single):
     return dst
 
 
-def addNoise(img, sdev=0.5, avg=10):
+def addNoise(img):
     img[:, :, 0] = AddNoiseSingleChannel(img[:, :, 0])
     img[:, :, 1] = AddNoiseSingleChannel(img[:, :, 1])
     img[:, :, 2] = AddNoiseSingleChannel(img[:, :, 2])
@@ -166,7 +159,7 @@ class GenPlate:
     def genPlateString(self, pos, val):
         plateStr = ""
         box = [0, 0, 0, 0, 0, 0, 0]
-        if (pos != -1):
+        if pos != -1:
             box[pos] = 1
         for unit, cpos in zip(box, range(len(box))):
             if unit == 1:
@@ -182,7 +175,7 @@ class GenPlate:
         return plateStr
 
     def genBatch(self, batchSize, outputPath, size):
-        if (not os.path.exists(outputPath)):
+        if not os.path.exists(outputPath):
             os.mkdir(outputPath)
         for i in range(batchSize):
             plateStr = G.genPlateString(-1, -1)

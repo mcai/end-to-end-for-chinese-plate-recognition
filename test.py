@@ -1,9 +1,6 @@
 # coding=utf-8
-import sys
-
 from mxnet.test_utils import list_gpus
 
-sys.path.insert(0, "../../python")
 import mxnet as mx
 import numpy as np
 import cv2
@@ -62,9 +59,9 @@ def TestRecognizeOne(img):
     for i in range(probs.shape[0]):
         if i == 0:
             result = np.argmax(probs[i][0:31])
-        if i == 1:
+        elif i == 1:
             result = np.argmax(probs[i][41:65]) + 41
-        if i > 1:
+        else:
             result = np.argmax(probs[i][31:65]) + 31
 
         line += chars[result] + " "

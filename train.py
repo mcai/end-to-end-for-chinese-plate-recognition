@@ -69,7 +69,6 @@ class OCRIter(mx.io.DataIter):
         print("start")
 
     def __iter__(self):
-
         for k in range(int(self.count / self.batch_size)):
             data = []
             label = []

@@ -19,9 +19,24 @@ sudo chmod a+r /usr/lib/x86_64-linux-gnu/libcudnn*
 
 ```
 sudo apt-get install python-pip
+sudo apt-get install python-pip3
 pip install --upgrade pip
+pip3 install --upgrade pip
+```
+
+(a) For gpu support only:
+
+```
 pip install --user mxnet-cu80
 pip3 install --user mxnet-cu80
+
+```
+
+(b) Otherwise:
+
+```
+pip install --user mxnet
+pip3 install --user mxnet
 ```
 
 To verify mxnet installation, test the following Python file:

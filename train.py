@@ -1,6 +1,7 @@
 # coding=utf-8
 import cv2
 import mxnet as mx
+from mxnet.test_utils import list_gpus
 
 from genplate import *
 
@@ -130,7 +131,7 @@ def train():
     network = get_ocrnet()
     #    devs = [mx.gpu(i) for i in range(1)]
     model = mx.model.FeedForward(
-        symbol=network,
+        symbol=network, ctx=mx.gpu() if list_gpus() else mx.cpu(),
         num_epoch=1,
         learning_rate=0.001,
         wd=0.00001,

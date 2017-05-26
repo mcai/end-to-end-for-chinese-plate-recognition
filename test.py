@@ -1,6 +1,8 @@
 # coding=utf-8
 import sys
 
+from mxnet.test_utils import list_gpus
+
 sys.path.insert(0, "../../python")
 import mxnet as mx
 import numpy as np
@@ -49,7 +51,7 @@ def TestRecognizeOne(img):
     data_shape = [("data", (batch_size, 3, 30, 120))]
     input_shapes = dict(data_shape)
     sym = getnet()
-    executor = sym.simple_bind(ctx=mx.cpu(), **input_shapes)
+    executor = sym.simple_bind(ctx=mx.gpu() if list_gpus() else mx.cpu(), **input_shapes)
     for key in executor.arg_dict.keys():
         if key in arg_params:
             arg_params[key].copyto(executor.arg_dict[key])

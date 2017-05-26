@@ -5,11 +5,7 @@ import mxnet as mx
 import numpy as np
 import cv2
 
-chars = ["京", "沪", "津", "渝", "冀", "晋", "蒙", "辽", "吉", "黑", "苏", "浙", "皖", "闽", "赣", "鲁", "豫", "鄂", "湘", "粤", "桂",
-         "琼", "川", "贵", "云", "藏", "陕", "甘", "青", "宁", "新", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A",
-         "B", "C", "D", "E", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X",
-         "Y", "Z"
-         ]
+from common import chars
 
 
 def getnet():
@@ -35,15 +31,17 @@ def getnet():
     return mx.symbol.SoftmaxOutput(data=fc2, name="softmax")
 
 
-def TestRecognizeOne(img):
+def recognize_one(img_filename):
+    img = cv2.imread(img_filename)
     img = cv2.resize(img, (120, 30))
-    cv2.imshow("img", img)
     img = np.swapaxes(img, 0, 2)
     img = np.swapaxes(img, 1, 2)
+
     batch_size = 1
     _, arg_params, __ = mx.model.load_checkpoint("cnn-ocr", 1)
     data_shape = [("data", (batch_size, 3, 30, 120))]
     input_shapes = dict(data_shape)
+
     sym = getnet()
     executor = sym.simple_bind(ctx=mx.gpu() if list_gpus() else mx.cpu(), **input_shapes)
     for key in executor.arg_dict.keys():
@@ -52,6 +50,7 @@ def TestRecognizeOne(img):
 
     executor.forward(is_train=True, data=mx.nd.array([img]))
     probs = executor.outputs[0].asnumpy()
+
     line = ''
     for i in range(probs.shape[0]):
         if i == 0:
@@ -61,9 +60,10 @@ def TestRecognizeOne(img):
         else:
             result = np.argmax(probs[i][31:65]) + 31
 
-        line += chars[result] + " "
-    print('predicted: ' + line)
+        line += chars[result]
+
+    print('recognized as: ' + line)
 
 
 if __name__ == '__main__':
-    TestRecognizeOne(cv2.imread("./recognize_samples/00.jpg"))
+    recognize_one('./recognize_samples/00.jpg')

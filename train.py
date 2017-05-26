@@ -116,7 +116,8 @@ def train():
         initializer=mx.init.Xavier(factor_type="in", magnitude=2.34),
         momentum=0.9)
     batch_size = 20
-    data_train = OCRIter(2000000, batch_size, 7, 30, 120)
+    # data_train = OCRIter(2000000, batch_size, 7, 30, 120)
+    data_train = OCRIter(5000000, batch_size, 7, 30, 120)
     data_test = OCRIter(1000, batch_size, 7, 30, 120)
 
     import logging

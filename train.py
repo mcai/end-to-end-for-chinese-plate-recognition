@@ -144,7 +144,7 @@ def train():
     logging.basicConfig(level=logging.DEBUG, format=head)
     model.fit(X=data_train, eval_data=data_test, eval_metric=acc,
               batch_end_callback=mx.callback.Speedometer(batch_size, 50))
-    model.save("cnn-ocr")
+    model.save("models/cnn-ocr")
     print(gen_rand())
 
 

@@ -38,7 +38,7 @@ def recognize_one(img_filename):
     img = np.swapaxes(img, 1, 2)
 
     batch_size = 1
-    _, arg_params, __ = mx.model.load_checkpoint("cnn-ocr", 1)
+    _, arg_params, __ = mx.model.load_checkpoint("models/cnn-ocr", 1)
     data_shape = [("data", (batch_size, 3, 30, 120))]
     input_shapes = dict(data_shape)
 

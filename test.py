@@ -38,11 +38,8 @@ def getnet():
 def TestRecognizeOne(img):
     img = cv2.resize(img, (120, 30))
     cv2.imshow("img", img)
-
-    print(img.shape)
     img = np.swapaxes(img, 0, 2)
     img = np.swapaxes(img, 1, 2)
-    print(img.shape)
     batch_size = 1
     _, arg_params, __ = mx.model.load_checkpoint("cnn-ocr", 1)
     data_shape = [("data", (batch_size, 3, 30, 120))]

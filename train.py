@@ -60,13 +60,13 @@ def generate_sample(generate_plate, width, height):
 class OCRIter(mx.io.DataIter):
     def __init__(self, count, batch_size, num_label, height, width):
         super(OCRIter, self).__init__()
+
         self.batch_size = batch_size
         self.count = count
         self.height = height
         self.width = width
         self.provide_data = [('data', (batch_size, 3, height, width))]
         self.provide_label = [('softmax_label', (self.batch_size, num_label))]
-        print("start")
 
     def __iter__(self):
         for k in range(int(self.count / self.batch_size)):
@@ -107,6 +107,7 @@ def accuracy(label, pred):
 
 def train():
     net = plate_recognition_net(train=True)
+
     model = mx.model.FeedForward(
         symbol=net, ctx=mx.gpu() if list_gpus() else mx.cpu(),
         num_epoch=1,
@@ -114,7 +115,9 @@ def train():
         wd=0.00001,
         initializer=mx.init.Xavier(factor_type="in", magnitude=2.34),
         momentum=0.9)
+
     batch_size = 20
+
     # data_train = OCRIter(2000000, batch_size, 7, 30, 120)
     data_train = OCRIter(5000000, batch_size, 7, 30, 120)
     data_test = OCRIter(1000, batch_size, 7, 30, 120)

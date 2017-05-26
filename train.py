@@ -7,6 +7,31 @@ from generate_plates import *
 from generate_plates import generate_plate
 
 
+def rand_range(lo, hi):
+    return lo + rand(hi - lo)
+
+
+def generate_rand():
+    label = [rand_range(0, 31), rand_range(41, 65)]
+    name = chars[label[0]] + chars[label[1]]
+
+    for i in range(5):
+        label.append(rand_range(31, 65))
+        name += chars[label[i + 2]]
+
+    return name, label
+
+
+def generate_sample(generate_plate, width, height):
+    num, label = generate_rand()
+    img = generate_plate.generate(num)
+    img = cv2.resize(img, (width, height))
+    img = np.multiply(img, 1 / 255.0)
+    img = img.transpose(2, 0, 1)
+
+    return label, img
+
+
 class OCRBatch(object):
     def __init__(self, data_names, data, label_names, label):
         self.data = data
@@ -21,40 +46,6 @@ class OCRBatch(object):
     @property
     def provide_label(self):
         return [(n, x.shape) for n, x in zip(self.label_names, self.label)]
-
-
-def rand_range(lo, hi):
-    return lo + rand(hi - lo)
-
-
-def generate_rand():
-    name = ""
-
-    label = []
-
-    label.append(rand_range(0, 31))
-    label.append(rand_range(41, 65))
-
-    for i in range(5):
-        label.append(rand_range(31, 65))
-
-    name += chars[label[0]]
-    name += chars[label[1]]
-
-    for i in range(5):
-        name += chars[label[i + 2]]
-
-    return name, label
-
-
-def generate_sample(generate_plate, width, height):
-    num, label = generate_rand()
-    img = generate_plate.generate(num)
-    img = cv2.resize(img, (width, height))
-    img = np.multiply(img, 1 / 255.0)
-    img = img.transpose(2, 0, 1)
-
-    return label, img
 
 
 class OCRIter(mx.io.DataIter):

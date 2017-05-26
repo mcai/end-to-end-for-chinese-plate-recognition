@@ -23,9 +23,6 @@ def rand(val):
 def plate_recognition_net(train=False):
     data = mx.symbol.Variable('data')
 
-    if train:
-        label = mx.symbol.Variable('softmax_label')
-
     conv1 = mx.symbol.Convolution(data=data, kernel=(5, 5), num_filter=32)
     pool1 = mx.symbol.Pooling(data=conv1, pool_type="max", kernel=(2, 2), stride=(1, 1))
     relu1 = mx.symbol.Activation(data=pool1, act_type="relu")
@@ -46,6 +43,7 @@ def plate_recognition_net(train=False):
     fc2 = mx.symbol.Concat(*[fc21, fc22, fc23, fc24, fc25, fc26, fc27], dim=0)
 
     if train:
+        label = mx.symbol.Variable('softmax_label')
         label = mx.symbol.transpose(data=label)
         label = mx.symbol.Reshape(data=label, target_shape=(0,))
 

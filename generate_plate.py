@@ -173,6 +173,6 @@ class GeneratePlate:
             cv2.imwrite(output_path + "/" + str(i).zfill(2) + ".jpg", img)
 
 
-G = GeneratePlate("font/platech.ttf", 'font/platechar.ttf', "NoPlates")
+G = GeneratePlate("fonts/platech.ttf", 'fonts/platechar.ttf', "no_plates")
 
-G.generate_batch(100, "./plate", (272, 72))
+G.generate_batch(100, "plates", (272, 72))

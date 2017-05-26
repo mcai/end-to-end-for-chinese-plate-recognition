@@ -53,7 +53,7 @@ def gen_sample(genplate, width, height):
 class OCRIter(mx.io.DataIter):
     def __init__(self, count, batch_size, num_label, height, width):
         super(OCRIter, self).__init__()
-        self.genplate = GeneratePlate("./font/platech.ttf", './font/platechar.ttf', './NoPlates')
+        self.genplate = GeneratePlate("fonts/platech.ttf", 'fonts/platechar.ttf', 'no_plates')
         self.batch_size = batch_size
         self.count = count
         self.height = height
@@ -128,7 +128,6 @@ def acc(label, pred):
 
 def train():
     network = get_ocrnet()
-    #    devs = [mx.gpu(i) for i in range(1)]
     model = mx.model.FeedForward(
         symbol=network, ctx=mx.gpu() if list_gpus() else mx.cpu(),
         num_epoch=1,
@@ -137,7 +136,6 @@ def train():
         initializer=mx.init.Xavier(factor_type="in", magnitude=2.34),
         momentum=0.9)
     batch_size = 20
-    # data_train = OCRIter(500000, batch_size, 7, 30, 120)
     data_train = OCRIter(2000000, batch_size, 7, 30, 120)
     data_test = OCRIter(1000, batch_size, 7, 30, 120)
 

@@ -66,4 +66,4 @@ def recognize_one(img_filename):
 
 
 if __name__ == '__main__':
-    recognize_one('./recognize_samples/00.jpg')
+    recognize_one('./plates_to_test/00.jpg')

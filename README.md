@@ -1,6 +1,6 @@
 # Introduction
 
-Chinese Plate Number Recognition powered by OpenCV and MxNet written in Python 3.
+Chinese Plate Number Recognition powered by OpenCV and MXNet written in Python 3.
 
 Based on the following Github projects:
 
@@ -14,15 +14,15 @@ Based on the following Github projects:
 
 * OpenCV 3.2
 
-* MxNet 0.9.5
+* MXNet 0.9.5
 
-Please see [notes/opencv.md](notes/opencv.md) and [notes/mxnet.md](notes/mxnet.md) for installing OpenCV and MxNet, respectively.
+Please see [notes/opencv.md](notes/opencv.md) and [notes/mxnet.md](notes/mxnet.md) for installing OpenCV and MXNet, respectively.
 
 The following combinations were tested successfully:
 
-* Python 3.5 + OpenCV 3.2.1 + MxNet 0.9.5(with GPU) + Ubuntu 16.04.2
+* Python 3.5 + OpenCV 3.2.1 + MXNet 0.9.5(with GPU) + Ubuntu 16.04.2
 
-* Python 3.6 + OpenCV 3.2.1 + MxNet 0.9.5(without GPU) + Mac OS Sierra (10.12.5)
+* Python 3.6 + OpenCV 3.2.1 + MXNet 0.9.5(without GPU) + Mac OS Sierra (10.12.5)
 
 # File Structure
 
@@ -30,7 +30,7 @@ The following combinations were tested successfully:
 
 * images/ - background images.
 
-* models/ - trained MxNet models.
+* models/ - trained MXNet models.
 
 * no_plates/ - noise images which contain no plate numbers.
 

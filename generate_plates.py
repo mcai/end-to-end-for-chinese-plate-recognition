@@ -173,4 +173,4 @@ class GeneratePlate:
 
 generate_plate = GeneratePlate("fonts/plate_cn.ttf", 'fonts/plate_en.ttf', "no_plates")
 
-generate_batch(1000, "plates", (272, 72))
+generate_batch(1500, "plates", (272, 72))

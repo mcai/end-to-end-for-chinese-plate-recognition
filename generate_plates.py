@@ -7,8 +7,8 @@ import os
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
-
 from common import chars, rand
+import  random
 
 
 def rotate(img, angel, shape, max_angel):
@@ -121,11 +121,14 @@ def generate_plate_str(pos, val):
 
 
 def generate_batch(batch_size, output_path, size):
+    newsize=size
+
     if not os.path.exists(output_path):
         os.mkdir(output_path)
     for i in range(batch_size):
         plate_str = generate_plate_str(-1, -1)
         img = generate_plate.generate(plate_str)
+        size=int(newsize[0]+random.random()*150),int(newsize[1]+random.random()*150)
         img = cv2.resize(img, size)
         cv2.imwrite(output_path + "/" + str(i).zfill(2) + ".jpg", img)
 
@@ -170,4 +173,4 @@ class GeneratePlate:
 
 generate_plate = GeneratePlate("fonts/plate_cn.ttf", 'fonts/plate_en.ttf', "no_plates")
 
-generate_batch(100, "plates", (272, 72))
+generate_batch(1000, "plates", (272, 72))

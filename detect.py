@@ -1,11 +1,12 @@
-# coding=utf-8
+#coding=utf-8
+import sys
 import cv2
 import numpy as np
 import glob
 import os
 
+def preprocess(gray,rates):
 
-def preprocess(gray, rates):
     # # 直方图均衡化
     # equ = cv2.equalizeHist(gray)
     # 高斯平滑
@@ -17,7 +18,7 @@ def preprocess(gray, rates):
     # 二值化
 
     ret, binary = cv2.threshold(sobel, 170, 255, cv2.THRESH_BINARY)
-    # binary=Threshold(sobel)
+    #binary=Threshold(sobel)
     # 膨胀和腐蚀操作的核函数
     element1 = cv2.getStructuringElement(cv2.MORPH_RECT, (rates, 1))
     element2 = cv2.getStructuringElement(cv2.MORPH_RECT, (rates, 7))
@@ -27,12 +28,9 @@ def preprocess(gray, rates):
     erosion = cv2.erode(dilation, element1, iterations=1)
     # 再次膨胀，让轮廓明显一些
     dilation2 = cv2.dilate(erosion, element2, iterations=3)
-    # cv2.imshow('dilation2', dilation2)
-    #  cv2.waitKey(0)
     return dilation2
 
-
-def preprocess2(gray, rates):
+def preprocess2(gray,rates):
     # # 直方图均衡化
     # equ = cv2.equalizeHist(gray)
     # 高斯平滑
@@ -52,61 +50,10 @@ def preprocess2(gray, rates):
     erosion = cv2.erode(dilation, element1, iterations=1)
     # 再次膨胀，让轮廓明显一些
     dilation2 = cv2.dilate(erosion, element2, iterations=3)
-    # cv2.imshow('dilation2', dilation2)
-    #  cv2.waitKey(0)
     return dilation2
 
 
-def AdaptiveThreshold(t, image):
-    Allt1 = 0
-    Allt2 = 0
-    accountt1 = 0
-    accountt2 = 0
-    width = image.shape[0]
-    height = image.shape[1]
-    for j in range(0, height):
-        for i in range(0, width):
-            if image[i][j] < t:
-                Allt1 += image[i][j]
-                accountt1 += 1
-            else:
-                Allt2 += image[i][j]
-                accountt2 += 1
 
-    t1 = Allt1 / accountt1;
-    t2 = Allt2 / accountt2;
-    tnew = 0.5 * (t1 + t2)
-    print
-    "td=", t;
-    print
-    tnew
-    if tnew == t:
-        return t
-    else:
-        return AdaptiveThreshold(tnew, image)
-
-
-def Threshold(image):
-    image = cv2.GaussianBlur(image, (3, 3), 0, 0, cv2.BORDER_DEFAULT)
-    thresMax = 0
-    thresMin = 255
-    width = image.shape[0]
-    height = image.shape[1]
-    for j in range(0, height):
-        for i in range(0, width):
-            if image[i][j] > thresMax:
-                thresMax = image[i][j]
-            elif image[i][j] < thresMin:
-                thresMin = image[i][j]
-
-    x = AdaptiveThreshold((thresMin + thresMax + 256) * 0.5, image)
-    print
-    "x", x
-    cv2.imshow("ds", image)
-    img = cv2.Canny(image, x, thresMax * 0.7, 3)
-    cv2.imshow("sdf", img)
-    cv2.waitKey(0)
-    return img
 
 
 def findPlateNumberRegion(img):
@@ -130,10 +77,8 @@ def findPlateNumberRegion(img):
 
         # 找到最小的矩形，该矩形可能有方向
         rect = cv2.minAreaRect(cnt)
-        print
-        "rect is: "
-        print
-        rect
+        #print "rect is: "
+        #print rect
 
         # box是四个点的坐标
         box = cv2.cv.BoxPoints(rect)
@@ -144,8 +89,7 @@ def findPlateNumberRegion(img):
         width = abs(box[0][0] - box[2][0])
         # 车牌正常情况下长高比在2.7-5之间
         ratio = float(width) / float(height)
-        print
-        ratio
+        #print ratio
         if (ratio > 5 or ratio < 2.7):
             continue
         region.append(box)
@@ -153,23 +97,22 @@ def findPlateNumberRegion(img):
     return region
 
 
-def detect(img):
-    # 转化成灰度图
+def detect(img,i):
+        # 转化成灰度图
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    # img=Threshold(gray)
-    # cv2.imshow("s",gray)
-    # cv2.waitKey(0)
-    # 形态学变换的预处理
-    dilation = preprocess(gray, 9)
+        # 形态学变换的预处理
+    dilation = preprocess(gray,9)
 
     # 查找车牌区域
     region = findPlateNumberRegion(dilation)
-    rates = 9
+    rates=9
     # 用绿线画出这些找到的轮廓
-    while (not region):
-        rates += 6
-        dilation = preprocess(gray, rates)
-        region = findPlateNumberRegion(dilation)
+    while(not region):
+     rates+=6
+     dilation = preprocess(gray, rates)
+     region = findPlateNumberRegion(dilation)
+
+
 
     for box in region:
         cv2.drawContours(img, [box], 0, (0, 255, 0), 2)
@@ -186,23 +129,20 @@ def detect(img):
 
     img_org2 = img.copy()
     img_plate = img_org2[y1:y2, x1:x2]
-    cv2.imshow('number plate', img_plate)
-    cv2.imwrite('number_plate.jpg', img_plate)
+    cv2.imwrite('./de/'+i, img_plate)
 
-    # cv2.namedWindow('img', cv2.WINDOW_NORMAL)
-    # cv2.imshow('img', img)
-
-    # 带轮廓的图片
     cv2.imwrite('contours.png', img)
-
-    cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 
+
+
 if __name__ == '__main__':
-    for files in glob.glob('sample_images/*.jpg'):
+
+    for files in glob.glob('./sample_images/*.jpg'):
+
         filepath, filename = os.path.split(files)
         imagePath = filepath + '/' + filename
-        print(filename)
+        print (filename)
         img = cv2.imread(imagePath)
-        detect(img)
+        detect(img,filename)

@@ -29,8 +29,6 @@ def preprocess(gray, rates):
     dilation2 = cv2.dilate(erosion, element2, iterations=3)
     # cv2.imshow('dilation2', dilation2)
     #  cv2.waitKey(0)
-    cv2.imshow("ad", dilation2)
-    cv2.waitKey(0)
     return dilation2
 
 

@@ -4,7 +4,6 @@ import cv2
 import numpy as np
 import glob
 import os
-
 def preprocess(gray,rates):
 
     # # 直方图均衡化
@@ -59,9 +58,9 @@ def preprocess2(gray,rates):
 def findPlateNumberRegion(img):
     region = []
     # 查找轮廓
-    contours, hierarchy = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
+    t,contours, hierarchy =  cv2.findContours(img,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
     # 筛选面积小的
+    #t接空值
     for i in range(len(contours)):
         cnt = contours[i]
         # 计算该轮廓的面积
@@ -81,7 +80,7 @@ def findPlateNumberRegion(img):
         #print rect
 
         # box是四个点的坐标
-        box = cv2.cv.BoxPoints(rect)
+        box = cv2.boxPoints(rect)
         box = np.int0(box)
 
         # 计算高和宽
@@ -132,9 +131,6 @@ def detect(img,i):
     cv2.imwrite('./de/'+i, img_plate)
 
     cv2.imwrite('contours.png', img)
-    cv2.destroyAllWindows()
-
-
 
 
 if __name__ == '__main__':

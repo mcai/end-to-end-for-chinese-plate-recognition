@@ -8,12 +8,19 @@ ret, thresh = cv2.threshold(cv2.cvtColor(img.copy(), cv2.COLOR_BGR2GRAY), 125, 2
 image, contours, hier = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
 
-def sort_func(c):
-    (x, y, w, h) = cv2.boundingRect(c)
-    return (x, y, w, h)
+def sort_func(c1, c2):
+    (x1, y1, w1, h1) = cv2.boundingRect(c1)
+    (x2, y2, w2, h2) = cv2.boundingRect(c2)
+    
+    if x1 > x2:
+        return 1
+    elif y1 > y2:
+        return 1
+    else:
+        return -1
 
 
-contours = sorted(contours, sort_func)
+contours.sort(cmp=sort_func)
 
 i = 0
 for c in contours:

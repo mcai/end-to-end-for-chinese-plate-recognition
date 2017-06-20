@@ -1,7 +1,7 @@
 import cv2
 import os
 
-img = cv2.imread('plates_to_test3/timg.jpg', -1)
+img = cv2.imread('plates_to_test3/timg1.jpg', -1)
 # print(img.shape)
 
 ret, thresh = cv2.threshold(cv2.cvtColor(img.copy(), cv2.COLOR_BGR2GRAY), 125, 255, cv2.THRESH_BINARY)
@@ -19,7 +19,9 @@ i = 0
 for c in contours:
     rect = cv2.boundingRect(c)
 
-    print(rect)
+    #
+
+    # print(rect)
 
     x, y, w, h = rect
 
